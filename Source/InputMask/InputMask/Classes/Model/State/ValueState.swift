@@ -32,18 +32,21 @@ class ValueState: State {
         case Numeric
         case Literal
         case AlphaNumeric
+        case AnySymbol
     }
     
     let type: StateType
     
     func accepts(character char: Character) -> Bool {
         switch self.type {
-            case .Numeric:
-                return CharacterSet.decimalDigits.isMember(character: char)
-            case .Literal:
-                return CharacterSet.letters.isMember(character: char)
-            case .AlphaNumeric:
-                return CharacterSet.alphanumerics.isMember(character: char)
+        case .Numeric:
+            return CharacterSet.decimalDigits.isMember(character: char)
+        case .Literal:
+            return CharacterSet.letters.isMember(character: char)
+        case .AlphaNumeric:
+            return CharacterSet.alphanumerics.isMember(character: char)
+        case .AnySymbol:
+            return true
         }
     }
     
@@ -73,7 +76,7 @@ class ValueState: State {
     init(
         child: State,
         type: StateType
-    ) {
+        ) {
         self.type = type
         super.init(child: child)
     }
@@ -81,12 +84,14 @@ class ValueState: State {
     override var debugDescription: String {
         get {
             switch self.type {
-                case .Literal:
-                    return "[A] -> " + (nil != self.child ? self.child!.debugDescription : "nil")
-                case .Numeric:
-                    return "[0] -> " + (nil != self.child ? self.child!.debugDescription : "nil")
-                case .AlphaNumeric:
-                    return "[_] -> " + (nil != self.child ? self.child!.debugDescription : "nil")
+            case .Literal:
+                return "[A] -> " + (nil != self.child ? self.child!.debugDescription : "nil")
+            case .Numeric:
+                return "[0] -> " + (nil != self.child ? self.child!.debugDescription : "nil")
+            case .AlphaNumeric:
+                return "[_] -> " + (nil != self.child ? self.child!.debugDescription : "nil")
+            case .AnySymbol:
+                return "[*] -> " + (nil != self.child ? self.child!.debugDescription : "nil")
             }
         }
     }

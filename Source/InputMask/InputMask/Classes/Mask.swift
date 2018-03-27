@@ -296,6 +296,9 @@ private extension Mask {
                     
                 case .Numeric:
                     return self.appendPlaceholder(withState: state.child, placeholder: placeholder + "0")
+                
+                case .AnySymbol:
+                    return self.appendPlaceholder(withState: state.child, placeholder: placeholder + "*")
             }
         }
         
